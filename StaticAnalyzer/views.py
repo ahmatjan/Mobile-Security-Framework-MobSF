@@ -899,7 +899,14 @@ def CertInfo(APP_DIR,TOOLS_DIR):
 
     args=[settings.JAVA_PATH+'java','-jar', CP_PATH, certfile]
     dat=''
-    dat=escape(subprocess.check_output(args)).replace('\n', '</br>')
+    try:
+        dat=escape(subprocess.check_output(args)).replace('\n', '</br>')
+    except Exception as e:
+        print "[ERROR] Reading Signer Certificate Error"
+        string_error = '[ERROR]\n' + str(e)
+        ftp = open(APP_DIR+'ERROR_CertInfo.txt','w') 
+        ftp.write(string_error.encode('utf-8')) 
+        ftp.close()
     return dat
 def WinFixJava(TOOLS_DIR):
     print "[INFO] Running JAVA Path fix in Windows"
